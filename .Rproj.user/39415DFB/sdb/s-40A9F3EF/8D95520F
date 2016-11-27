@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "### build basic corpus of HF corpus\nrm(list = ls())\n\n# packages\nlibrary(tm)\nlibrary(RWeka)\nlibrary(slam)\n\n# data directory (vanilla utf-8)\ndatadir <- \"/home/kln/projects/human_futures/data/plaintext\"\nhf.cor <- Corpus(DirSource(datadir, encoding  = \"UTF-8\"), readerControl = list(language=\"PlainTextDocument\"))\n\n# import document names\nnames(hf.cor) <- gsub(\"\\\\..*\",\"\",names(hf.cor))# load metadata instead\n\n# preprocess quick and dirty\nhf.cor <- tm_map(hf.cor, PlainTextDocument)\nhf.cor <- tm_map(hf.cor, removePunctuation)\nhf.cor <- tm_map(hf.cor, removeNumbers)\nhf.cor <- tm_map(hf.cor, content_transformer(tolower))\nhf.cor <- tm_map(hf.cor, removeWords, stopwords(\"english\"))\nhf.cor <- tm_map(hf.cor, stemDocument) # proter stem\n\nhf.cor <- tm_map(hf.cor, stripWhitespace)\n\n\n\n# import class and type information (keywords)\nclass.df <- read.csv(\"/home/kln/projects/human_futures/keywords/keywords.csv\")\ntypes.v <- tolower(unlist(lapply(class.df[,3],as.character),use.names=FALSE))\n\n# remove whitespace and change underscore\ntypes.v <- gsub(\" \",\"\",types.v)\ntypes.v <- gsub(\"_\",\" \",types.v)\nprint(types.v)\nlibrary(SnowballC)\ntypes.stem.v <- wordStem(types.v, language = \"porter\") # proter stem\nprint(types.stem.v)\n\n\n# vector space (matrix)\nhf.dtm <- DocumentTermMatrix(hf.cor)\nhf.dtm <- DocumentTermMatrix(hf.cor, control=list(tokenize = NGramTokenizer))\nhf.mat <- as.matrix(hf.dtm)\nrownames(hf.mat) <- names(hf.cor) \n\n# extract features\ntypes.v[2]\nhf.mat[,types.v[6]]",
+    "created" : 1479717324924.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1277834514",
+    "id" : "8D95520F",
+    "lastKnownWriteTime" : 1480232646,
+    "last_content_update" : 1480232796916,
+    "path" : "~/projects/human_futures/code/feature_space.R",
+    "project_path" : "feature_space.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

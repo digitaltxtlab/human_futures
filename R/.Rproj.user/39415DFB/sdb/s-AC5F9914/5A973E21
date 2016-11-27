@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list = ls())\nsetwd(\"/home/kln/projects/human_futures/code/R\")\nload(\"/home/kln/projects/human_futures/data/hf_corpus.RData\")\n\n# import metadata\nmetadata <- read.csv(\"/home/kln/projects/human_futures/data/metadata.csv\", stringsAsFactors = FALSE)\n\nmetadata[,1]\n\n## make metadata df based on feature space row order\nfilenames <- rownames(feature.mat)\nmetafeature <- data.frame(matrix(nrow = length(filenames), ncol = ncol(metadata)))\ncolnames(metafeature) <- colnames(metadata)\n# remove trailing white space\nmetadata[,1] <- gsub(\" \",\"\",metadata[,1])\nfor(i in 1:length(filenames)){\n  #idx <- which(metadata[,i] == filenames[i])\n  metafeature[i,] = metadata[which(metadata[,1] == filenames[i]),]\n}\n\nrm(list = setdiff(ls(), c(\"metadata\",\"metafeature\")))\n# update save file\nresave <- function(..., list = character(), file) {\n  previous  <- load(file)\n  var.names <- c(list, as.character(substitute(list(...)))[-1L])\n  for (var in var.names) assign(var, get(var, envir = parent.frame()))\n  save(list = unique(c(previous, var.names)), file = file)\n}\nresave(\"metadata\",\"metafeature\", file =  \"/home/kln/projects/human_futures/data/hf_corpus.RData\")",
+    "created" : 1480237012415.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2380975109",
+    "id" : "5A973E21",
+    "lastKnownWriteTime" : 1480242615,
+    "last_content_update" : 1480242615741,
+    "path" : "~/projects/human_futures/code/R/metadata.R",
+    "project_path" : "metadata.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
