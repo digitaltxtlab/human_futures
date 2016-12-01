@@ -32,6 +32,11 @@ types.v <- tolower(unlist(lapply(class.df[,3],as.character),use.names=FALSE))
 types.v <- gsub(" ","",types.v)
 types.v <- gsub("_"," ",types.v)
 
+# use keywords from deep neural net instead
+class.df <- read.csv("/home/kln/projects/human_futures/data/kw_embed_list.csv",header = FALSE, stringsAsFactors = FALSE)
+types.v <- unique(class.df[,5])
+
+
 # stem
 library(SnowballC)
 types.stem.v <- wordStem(types.v,'english')
@@ -86,4 +91,4 @@ resave <- function(..., list = character(), file) {
   save(list = unique(c(previous, var.names)), file = file)
 }
 
-resave("feature.mat","feature.class.df","meta_idx.v", file =  "hf_corpus.RData")
+resave("feature.mat","feature.class.df","meta_idx.v", file =  "/home/kln/projects/human_futures/data/hf_corpus.RData")

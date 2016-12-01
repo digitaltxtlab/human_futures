@@ -85,7 +85,7 @@ kw_in_mdl = [w for w in kwl if w in v]
 for w in kw_in_mdl:
     print w, mdl.most_similar(w)
 
-mdl.most_similar('communicating')
+print mdl.most_similar('media')
 # export model for visualization
 import numpy as np
 m = np.zeros(shape = (len(v),100))
